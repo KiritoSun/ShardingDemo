@@ -13,7 +13,7 @@ mybatis-plus:
     typeAliasesPackage: com.zt.domain.entity
 server:
     connection-timeout: 6000
-    port: 8081
+    port: 8082
     tomcat:
         accept-count: 1500
         max-connections: 10000
@@ -40,7 +40,7 @@ spring:
             host: 127.0.0.1
             port: 8500
     datasource:
-        driver-class-name: com.mysql.jdbc.Driver
+#        driver-class-name: com.mysql.jdbc.Driver
         druid:
             connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
             filters: stat,wall
@@ -67,9 +67,23 @@ spring:
                 enabled: true
                 exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
                 url-pattern: /*
-        type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/esdemo?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&autoReconnectForPools=true
-        username: root
-        password: abc123
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        url: jdbc:mysql://127.0.0.1:3306/esdemo?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&autoReconnectForPools=true
+#        username: root
+#        password: abc123
     jackson:
         time-zone: GMT+8
+
+# 数据源配置
+database0:
+    databaseName: database0
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/database0?characterEncoding=utf8&useSSL=false
+    username: root
+    password: abc123
+database1:
+    databaseName: database1
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/database1?characterEncoding=utf8&useSSL=false
+    username: root
+    password: abc123
