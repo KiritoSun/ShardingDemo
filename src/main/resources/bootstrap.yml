@@ -13,7 +13,7 @@ mybatis-plus:
     typeAliasesPackage: com.zt.domain.entity
 server:
     connection-timeout: 6000
-    port: 8081
+    port: 8082
     tomcat:
         accept-count: 1500
         max-connections: 10000
@@ -40,7 +40,7 @@ spring:
             host: 127.0.0.1
             port: 8500
     datasource:
-        driver-class-name: com.mysql.jdbc.Driver
+#        driver-class-name: com.mysql.jdbc.Driver
         druid:
             connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
             filters: stat,wall
@@ -67,9 +67,61 @@ spring:
                 enabled: true
                 exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
                 url-pattern: /*
-        type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://127.0.0.1:3306/esdemo?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&autoReconnectForPools=true
-        username: root
-        password: abc123
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        url: jdbc:mysql://127.0.0.1:3306/esdemo?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&autoReconnectForPools=true
+#        username: root
+#        password: abc123
     jackson:
         time-zone: GMT+8
+
+# sharding jdbc数据源配置
+sharding:
+    jdbc:
+        # 数据源的设置
+        datasource:
+                    names: sharding_test_00,sharding_test_01,sharding_test_02,sharding_test_03
+                    # sharding_test_00数据源设置
+                    sharding_test_00:
+                        driver-class-name: com.mysql.jdbc.Driver
+                        password: abc123
+                        type: com.alibaba.druid.pool.DruidDataSource
+                        url: jdbc:mysql://127.0.0.1:3306/sharding_test_00?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+                        username: root
+                    # sharding_test_01数据源设置
+                    sharding_test_01:
+                        driver-class-name: com.mysql.jdbc.Driver
+                        password: abc123
+                        type: com.alibaba.druid.pool.DruidDataSource
+                        url: jdbc:mysql://127.0.0.1:3306/sharding_test_01?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+                        username: root
+                    # sharding_test_02数据源设置
+                    sharding_test_02:
+                        driver-class-name: com.mysql.jdbc.Driver
+                        password: abc123
+                        type: com.alibaba.druid.pool.DruidDataSource
+                        url: jdbc:mysql://127.0.0.1:3306/sharding_test_02?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+                        username: root
+                    # sharding_test_03数据源设置
+                    sharding_test_03:
+                        driver-class-name: com.mysql.jdbc.Driver
+                        password: abc123
+                        type: com.alibaba.druid.pool.DruidDataSource
+                        url: jdbc:mysql://127.0.0.1:3306/sharding_test_03?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+                        username: root
+        # 数据库分库分表规则定义
+        config:
+            sharding:
+                tables:
+                    # ids_user逻辑表的分库分表配置
+                    ids_user:
+                        actual-data-nodes: sharding_test_0$->{0..3}.ids_user_0$->{0..3}
+                        # 分库配置
+                        database-strategy:
+                            standard:
+                                precise-algorithm-class-name: com.zt.config.DatabasePreciseShardingAlgorithmImpl
+                                sharding-column: id
+                        # 分表配置
+                        table-strategy:
+                            standard:
+                                precise-algorithm-class-name: com.zt.config.TablePreciseShardingAlgorithmImpl
+                                sharding-column: u_id
